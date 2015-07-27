@@ -1,8 +1,46 @@
 # git-untracker
 
-A set of Git hooks that act like `.gitignore` for tracked files.
+This is `git-untracker`, a cross-platform addon to the Git version control system. `git-untracker` uses a file called `.gituntrack` which is similar to `.gitignore` but it works only on tracked files, whereas `.gitignore` only works on untracked files.
 
-To be more specific: once you have this software installed, all new git clones will support the `.gituntrack` functionality. Here's what the `.gituntrack` file does:
+Before you can decide whether or not you need this software, you should understand Git hooks and what `.gitignore` does.
+
+## Use cases
+
+### App.config
+
+Jim's company has a central Git repository in which there are some Visual Studio projects. These projects have `App.config` files that store paths that are different for each developer; Jim's local clone of the repository has an `App.config` file looking something like this:
+
+    <?xml version="1.0" encoding="utf-8"?>
+    
+    <configuration>
+    ...
+      <InstallationDirectory>
+        C:\Users\Jim\Documents\Backups
+      </InstallationDirectory>
+    ...
+    </configuration>
+
+Jim has a coworker named Ellie. She also has a local clone of the repository with an `App.config` that looks like this:
+
+    <?xml version="1.0" encoding="utf-8"?>
+    
+    <configuration>
+    ...
+      <InstallationDirectory>
+        C:\Users\Ellie\Documents\Backups
+      </InstallationDirectory>
+    ...
+    </configuration>
+
+The problem arises when Jim or Ellie commit `App.config`. They now have a conflict; git requires that `App.config` should be either Ellie's version or Jim's version. But that requirement is annoying because Ellie can't use Jim's version and Jim can't use Ellie's version.
+
+`git-untracker` solves this problem. In this use case, both Jim and Ellie would download and install `git-untracker` and then run `git init` on the command line in the root of all their local copies of the repository. Then one of them (let's assume it's Jim for sake of argument) would add a file named `.gituntrack` in the root of the repository, and in that would would be one line:
+
+    TheProject/App.config
+
+Jim would then commit this file and push it to the central repository. Ellie would pull that change down. Now, they can make changes to `App.config` and git will never commit those changes. They don't have to worry about `App.config` conflicts anymore.
+
+## What does `.gituntrack` do
 
 1. If a tracked file is listed in `.gituntrack` then that file's changes will never be committed.
 2. Files can be removed from `.gituntrack` and added to it; when `.gituntrack` is committed with these changes, these changes will be applied to the git repository.
@@ -11,7 +49,9 @@ To be more specific: once you have this software installed, all new git clones w
 
 1. Download the git-untracker repository: `git clone https://github.com/JohnBillington/git-untracker.git`
 2. Make the `git_template_dir` the default git template like this: `git config --global init.templateDir path/to/git-untracker/git_template_dir`
-3. Any pre-existing git repositories must have `git init` executed in their root in order to add `git-untracker` functionality to them. New repositories will automatically have `git-untracker` installed in them.
+3. Any pre-existing git repositories must have `git init` executed in their root in order to add `git-untracker` functionality to them. New repositories will automatically have `git-untracker` installed in them (with one exception noted below).
+
+Note: at least one IDE (Visual Studio 2015), when creating a new project, will give the user the option of creating a new git repository to put the new project in. In these cases, it's possible that the created git repository will have been created with a custom template, in which case `git-untracker` will not be installed in that repository. You can install `git-untracker` into the new repository manually by running `git init` in its root directory or by copying the hooks from *this* repository's `hooks` folder into the `.git/hooks` folder of the new repository.
 
 ### How to verify installation
 
@@ -19,6 +59,12 @@ To be more specific: once you have this software installed, all new git clones w
 2. Try to commit *everything* either via the command line (`git commit -a`) or via your favorite git user interface. If and only if `i-am-untracked.txt` does not show up as changed, then `git-untracker` is installed successfully.
 
 ## How to add to an existing repository
+
+### Option 1
+
+This option is probably easier for Windows users. All you need to do is copy each file from the `hooks` directory in this repository to the `.git/hooks` directory in the repository that needs `git-untracker`.
+
+### Option 2
 
 1. Make sure `git-untracker` is installed
 2. In the root of the repository in question, run `git init`. Running `git init` again does not erase the repository contents, it serves mostly just to update anything that changed in the git template.
@@ -29,6 +75,7 @@ To be more specific: once you have this software installed, all new git clones w
 2. Add the file path to `.gituntrack`. The path must be relative to the root of the repository. File name patterns are not supported.
 3. Commit the changes to `.gituntrack`. Be aware: the file stops being tracked *after* `.gituntrack` is committed with the file name inside it. So, if there are any uncommitted changes in the file when `.gituntrack` is being committed, `git` will try to commit the file as well. In other words, there may be one last commit to the file if you commit all your changes.
 
-## Shortcomings
+## Pitfalls
 
 1. Right now the `.gituntrack` file must be in the repository root.
+2. Some tools automatically specify their own template when creating a git repository; in these cases, the user must manually add the hooks to the repository. See the section `How to manually add to an existing repository` for more info.

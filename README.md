@@ -5,6 +5,7 @@ A set of Git hooks that act like `.gitignore` for tracked files.
 To be more specific: once you have this software installed, all new git clones will support the `.gituntrack` functionality. Here's what the `.gituntrack` file does:
 
 1. If a tracked file is listed in `.gituntrack` then that file's changes will never be committed.
+2. Files can be removed from .gituntrack and added to it; when `.gituntrack` is committed with these changes, these changes will be applied to the git repository.
 
 ## How to install
 

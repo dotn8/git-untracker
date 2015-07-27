@@ -14,8 +14,8 @@ To be more specific: once you have this software installed, all new git clones w
 
 ### How to verify installation
 
-1. Edit and save changes to the file i-am-untracked.txt
-1. 
+1. Edit and save changes to the file `i-am-untracked.txt`
+2. Try to commit *everything* either via the command line (`git commit -a`) or via your favorite git user interface. If and only if `i-am-untracked.txt` does not show up as changed, then `git-untracker` is installed successfully.
 
 ## How to add to an existing repository
 

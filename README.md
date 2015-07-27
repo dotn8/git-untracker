@@ -40,6 +40,8 @@ The problem arises when Jim or Ellie commit `App.config`. They now have a confli
 
 Jim would then commit this file and push it to the central repository. Ellie would pull that change down. Now, they can make changes to `App.config` and git will never commit those changes. They don't have to worry about `App.config` conflicts anymore.
 
+Note: the purpose of this use case is not to justify this software. It's to describe a simple problem and solution that potential users can identify with.
+
 ## What does `.gituntrack` do
 
 1. If a tracked file is listed in `.gituntrack` then that file's changes will never be committed.

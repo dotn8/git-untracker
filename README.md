@@ -1,6 +1,6 @@
 # git-untracker
 
-This is `git-untracker`, a cross-platform Git addon. `git-untracker` uses a file called `.gituntrack` which is similar to `.gitignore` but it works only on tracked files, whereas `.gitignore` only works on untracked files.
+This is `git-untracker`, a cross-platform Git extension in the form of a couple of git hooks. `git-untracker` uses a file called `.gituntrack` which is similar to `.gitignore` but it works only on tracked files, whereas `.gitignore` only works on untracked files.
 
 Before you can decide whether or not you need this software, you should understand Git hooks and what `.gitignore` does.
 

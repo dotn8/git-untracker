@@ -1,9 +1,9 @@
 #!/bin/sh
 
-#log=/dev/null
-log=pre-commit.log.txt
+log=/dev/null
+#log=post-commit.log.txt
 
-echo "Running pre-commit hook" >> $log
+echo "Running post-commit hook" >> $log
 
 echo "Unapplying state from previous version of .gituntrack" >> $log
 

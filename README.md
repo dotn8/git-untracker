@@ -22,3 +22,13 @@ To be more specific: once you have this software installed, all new git clones w
 
 1. Make sure `git-untracker` is installed
 2. In the root of the repository in question, run `git init`. Running `git init` again does not erase the repository contents, it serves mostly just to update anything that changed in the git template.
+
+## How to untrack a file
+
+1. Make sure the file has been committed.
+2. Add the file path to `.gituntrack`. The path must be relative to the root of the repository. File name patterns are not supported.
+3. Commit the changes to `.gituntrack`. Be aware: the file stops being tracked *after* `.gituntrack` is committed with the file name inside it. So, if there are any uncommitted changes in the file when `.gituntrack` is being committed, `git` will try to commit the file as well. In other words, there may be one last commit to the file if you commit all your changes.
+
+## Shortcomings
+
+1. Right now the `.gituntrack` file must be in the repository root.

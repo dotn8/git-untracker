@@ -1,6 +1,6 @@
 # git-untracker
 
-This is `git-untracker`, a cross-platform addon to the Git version control system. `git-untracker` uses a file called `.gituntrack` which is similar to `.gitignore` but it works only on tracked files, whereas `.gitignore` only works on untracked files.
+This is `git-untracker`, a cross-platform Git addon. `git-untracker` uses a file called `.gituntrack` which is similar to `.gitignore` but it works only on tracked files, whereas `.gitignore` only works on untracked files.
 
 Before you can decide whether or not you need this software, you should understand Git hooks and what `.gitignore` does.
 
@@ -8,15 +8,15 @@ Before you can decide whether or not you need this software, you should understa
 
 ### App.config
 
-Jim's company has a central Git repository in which there are some Visual Studio projects. These projects have `App.config` files that store paths that are different for each developer; Jim's local clone of the repository has an `App.config` file looking something like this:
+Jim's company has a central Git repository in which there is a Visual Studio project. This project contains an `App.config` file that stores a path that is different for each developer; Jim's local clone of the repository has an `App.config` file that looks like this:
 
     <?xml version="1.0" encoding="utf-8"?>
     
     <configuration>
     ...
-      <InstallationDirectory>
+      <UserSpecifiedBackupDirectory>
         C:\Users\Jim\Documents\Backups
-      </InstallationDirectory>
+      </UserSpecifiedBackupDirectory>
     ...
     </configuration>
 
@@ -26,13 +26,13 @@ Jim has a coworker named Ellie. She also has a local clone of the repository wit
     
     <configuration>
     ...
-      <InstallationDirectory>
-        C:\Users\Ellie\Documents\Backups
-      </InstallationDirectory>
+      <UserSpecifiedBackupDirectory>
+        C:\Users\Ellie\Dropbox\Work\Backups
+      </UserSpecifiedBackupDirectory>
     ...
     </configuration>
 
-The problem arises when Jim or Ellie commit `App.config`. They now have a conflict; git requires that `App.config` should be either Ellie's version or Jim's version. But that requirement is annoying because Ellie can't use Jim's version and Jim can't use Ellie's version.
+The problem arises when Jim or Ellie commit `App.config` and push that commit to the central repository. The next time the other person pulls from the central repository, git sounds a conflict alarm that says, "We should use either Ellie's or Jim's version of `App.config`." But that requirement is annoying to everyone because Ellie can't use Jim's version and Jim can't use Ellie's version.
 
 `git-untracker` solves this problem. In this use case, both Jim and Ellie would download and install `git-untracker` and then run `git init` on the command line in the root of all their local copies of the repository. Then one of them (let's assume it's Jim for sake of argument) would add a file named `.gituntrack` in the root of the repository, and in that would would be one line:
 

@@ -6,12 +6,12 @@ Before you can decide whether or not you need this software, you should understa
 
 ## Use cases
 
-### App.config
+### App.config as a manual template
 
 Jim's company has a central Git repository in which there is a Visual Studio project. This project contains an `App.config` file that stores a path that is different for each developer; Jim's local clone of the repository has an `App.config` file that looks like this:
 
     <?xml version="1.0" encoding="utf-8"?>
-    
+
     <configuration>
     ...
       <UserSpecifiedBackupDirectory>
@@ -23,7 +23,7 @@ Jim's company has a central Git repository in which there is a Visual Studio pro
 Jim has a coworker named Ellie. She also has a local clone of the repository with an `App.config` that looks like this:
 
     <?xml version="1.0" encoding="utf-8"?>
-    
+
     <configuration>
     ...
       <UserSpecifiedBackupDirectory>
@@ -39,6 +39,10 @@ The problem arises when Jim or Ellie commit `App.config` and push that commit to
     TheProject/App.config
 
 Jim would then commit this file and push it to the central repository. Ellie would pull that change down. Now, they can make changes to `App.config` and git will never commit those changes. They don't have to worry about `App.config` conflicts anymore.
+
+Whenever Jim or Ellie want to make a change to the committed version of the file, they can temporarily track the file (see the FAQ), revert uncommitted changes (like this: `git checkout App.config`), change the file, commit it, and then untrack the file again manually (see the FAQ). This way they can have an `App.config` that is a **template** to be filled out by a developer on a fresh clone.
+
+Also, Jim and Ellie design the committed `App.config` so that if a developer *doesn't* customize it to his or her environment, the program will immediately crash. This way, their configuration is designed to never fail silently (the program crashes if they haven't customized `App.config`) and follow the principle of least surprise (the program does not commit the customized `App.config`).
 
 Note: the purpose of this use case is not to justify this software. It's to describe a simple problem and solution that potential users can identify with.
 
@@ -76,6 +80,45 @@ This option is probably easier for Windows users. All you need to do is copy eac
 1. Make sure the file has been committed.
 2. Add the file path to `.gituntrack`. The path must be relative to the root of the repository. File name patterns are not supported.
 3. Commit the changes to `.gituntrack`. Be aware: the file stops being tracked *after* `.gituntrack` is committed with the file name inside it. So, if there are any uncommitted changes in the file when `.gituntrack` is being committed, `git` will try to commit the file as well. In other words, there may be one last commit to the file if you commit all your changes.
+
+## Faq
+
+### What does `.gituntrack` do if I don't have `git-untracker` installed?
+
+Nothing. If you don't have `git-untracker` installed, then the `.gituntrack` file has no special meaning.
+
+### How do I temporarily force a file to be tracked?
+
+To temporarily force a file to be tracked, run the following command line:
+
+    git update-index --no-assume-unchanged path/to/file
+
+To stop tracking a file manually, run the following command line:
+
+    git update-index --assume-unchanged path/to/file
+
+To see which files are untracked, run the following command line (from [here](http://stackoverflow.com/a/2363495/4995014)):
+
+    git ls-files -v | grep '^[[:lower:]]'
+
+### What happens there are local changes to the untracked file and remote, committed changes to the untracked file?
+
+When the person with the local changes pulls from the remote that has an updated version of the file, `git` detects that there's a conflict and displays a message like this:
+
+    λ git pull origin
+    remote: Counting objects: 7, done.
+    remote: Compressing objects: 100% (4/4), done.
+    remote: Total 4 (delta 3), reused 0 (delta 0)
+    Unpacking objects: 100% (4/4), done.
+    From C:\Users\John\Documents\git-untracker
+       2a8b992..e8c3bd5  master     -> origin/master
+    Updating 2a8b992..e8c3bd5
+    error: Your local changes to the following files would be overwritten by merge:
+            i-am-untracked.txt
+    Please, commit your changes or stash them before you can merge.
+    Aborting
+
+In other words, `git` will not overwrite your local changes; it will force you to resolve the conflict.
 
 ## Pitfalls
 

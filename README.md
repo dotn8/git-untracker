@@ -1,8 +1,8 @@
 # git-untracker
 
-This is `git-untracker`, a cross-platform Git extension in the form of a couple of git hooks. `git-untracker` uses a file called `.gituntrack` which is similar to `.gitignore` but it works only on tracked files, whereas `.gitignore` only works on *un*tracked files.
+This is `git-untracker`, a cross-platform Git extension in the form of a couple of git hooks and two new git commands: `git untrack` and `git retrack`. `git-untracker` uses a file called `.gituntrack` which is similar to `.gitignore` but it works only on tracked files, whereas `.gitignore` only works on *un*tracked files.
 
-Before you can decide whether or not you need this software, you should understand Git hooks and what `.gitignore` does.
+Before you can decide whether or not you need this software, you should understand Git, Git hooks, and what `.gitignore` does.
 
 ## Use cases
 
@@ -34,13 +34,13 @@ Jim has a coworker named Ellie. She also has a local clone of the repository wit
 
 The problem arises when Jim or Ellie commit `App.config` and push that commit to the central repository. The next time the other person pulls from the central repository, git sounds a conflict alarm that says, "We should use either Ellie's or Jim's version of `App.config`." But that requirement is annoying to everyone because Ellie can't use Jim's version and Jim can't use Ellie's version.
 
-`git-untracker` solves this problem. In this use case, both Jim and Ellie would download and install `git-untracker` and then run `git init` on the command line in the root of all their local copies of the repository. Then one of them (let's assume it's Jim for sake of argument) would add a file named `.gituntrack` in the root of the repository, and in that would would be one line:
+`git-untracker` solves this problem. In this use case, both Jim and Ellie would download and install `git-untracker` and then run `git init` on the command line in the root of all their local copies of the repository. Then one of them (let's assume it's Jim for sake of argument) would start untracking the `App.config` file by running the following command line in a command prompt in the repository:
 
-    TheProject/App.config
+    git untrack TheProject/App.config
 
-Jim would then commit this file and push it to the central repository. Ellie would pull that change down. Now, they can make changes to `App.config` and git will never commit those changes. They don't have to worry about `App.config` conflicts anymore.
+Jim would then commit the newly created `TheProject/.gituntrack` and push it to the central repository. Ellie would pull that change down. Now, they can make changes to `App.config` and git will never commit those changes. They don't have to worry about `App.config` conflicts anymore.
 
-Whenever Jim or Ellie want to make a change to the committed version of the file, they can temporarily track the file (see the FAQ), revert uncommitted changes (like this: `git checkout App.config`), change the file, commit it, and then untrack the file again manually (see the FAQ). This way they can have an `App.config` that is a **template** to be filled out by a developer on a fresh clone.
+Whenever Jim or Ellie want to make a change to the committed version of the file, they can temporarily retrack the file (like this: `git retrack TheProject/App.config --temporary`), revert uncommitted changes (like this: `git checkout App.config`), change the file, commit it, and then untrack the file again manually (like this: `git untrack TheProject/App.config`). This way, the copy of `App.config` in the git history serves as a **template**, to be filled out by a developer on a fresh clone.
 
 Also, Jim and Ellie design the committed `App.config` so that if a developer *doesn't* customize it to his or her environment, the program will immediately crash. This way, their configuration is designed to never fail silently (the program crashes if they haven't customized `App.config`) and follow the principle of least surprise (the program does not commit the customized `App.config`).
 
@@ -50,18 +50,20 @@ Note: the purpose of this use case is not to justify this software. It's to desc
 
 1. Download the installer and run it.
 2. In each git repository that you want `git-untrack` to work in, run this command line: `git init`
-3. Note: new repositories will automatically have `git-untrack` enabled in them.
 
-Note: at least one IDE (Visual Studio 2015), when creating a new project, will give the user the option of creating a new git repository to put the new project in. In these cases, it's possible that the created git repository will have been created with a custom template, in which case `git-untracker` will not be installed in that repository. You can install `git-untracker` into the new repository manually by running `git init` in its root directory or by copying the hooks from *this* repository's `hooks` folder into the `.git/hooks` folder of the new repository.
+**Note**: new repositories will automatically have `git-untrack` enabled in them.
+
+**Note**: at least one IDE (Visual Studio 2015), when creating a new project, will give the user the option of creating a new git repository to put the new project in. In these cases, it's possible that the created git repository will have been created with a custom template, in which case `git-untracker` will not be installed in that repository. You can install `git-untracker` into the new repository manually by running `git init` in its root directory or by copying the hooks from *this* repository's `hooks` folder into the `.git/hooks` folder of the new repository.
 
 ## How to build installer
 
-Visual Studio and WiX must be installed to build the installer.
+[Visual Studio](https://www.visualstudio.com/downloads/download-visual-studio-vs) and [WiX](http://wixtoolset.org/) must be installed to build the installer.
 
 1. Build the projects in Visual Studio with configuration `Release` and platform `AnyCPU`
-2. `cd` into the root of the `git-untracker` repository
-2. Run `"C:\Program Files (x86)\WiX Toolset v3.9\bin\candle.exe" -nologo "installer\git-untracker.wxs" -out "installer\git-untracker.wixobj"`
-3. Run `"C:\Program Files (x86)\WiX Toolset v3.9\bin\light.exe" -nologo "installer\git-untracker.wixobj" -out "installer\git-untracker.msi"`
+2. Clone the `git-untracker` repository: `git clone "https://github.com/JohnBillington/git-untracker.git"`
+3. Open a command prompt and `cd` into the root of the `git-untracker` repository
+4. Run `"C:\Program Files (x86)\WiX Toolset v3.9\bin\candle.exe" -nologo "installer\git-untracker.wxs" -out "installer\git-untracker.wixobj"`
+5. Run `"C:\Program Files (x86)\WiX Toolset v3.9\bin\light.exe" -nologo "installer\git-untracker.wixobj" -out "installer\git-untracker.msi"`
 
 ## Faq
 
@@ -76,19 +78,19 @@ Nothing. If you don't have `git-untracker` installed, then the `.gituntrack` fil
 
 ### How do I untrack a file?
 
-1. Make sure the file has been committed.
-2. Add the file path to `.gituntrack`. The path must be relative to the root of the repository. File name patterns (e.g., `*.txt`) are not supported.
-3. Commit the changes to `.gituntrack`. Be aware: the file stops being tracked *after* `.gituntrack` is committed with the file name inside it. So, if there are any uncommitted changes in the file when `.gituntrack` is being committed, `git` will try to commit the file as well. In other words, there may be one last commit to the file in question.
+    git untrack path/to/file.txt
 
 ### How do I temporarily force a file to be tracked?
 
 To temporarily force a file to be tracked, run the following command line:
 
-    git update-index --no-assume-unchanged path/to/file
+    git retrack path/to/file.txt --temporary
 
-To stop tracking a file manually, run the following command line:
+To undo the temporary tracking of a file, run the following command line:
 
-    git update-index --assume-unchanged path/to/file
+    git untrack -c
+
+You can run the above command at any time to make sure all the files are properly tracked or untracked depending upon the contents of `.gituntrack` files.
 
 To see which files are untracked, run the following command line (from [here](http://stackoverflow.com/a/2363495/4995014)):
 

@@ -64,17 +64,6 @@ Note: at least one IDE (Visual Studio 2015), when creating a new project, will g
 1. Edit and save changes to the file `i-am-untracked.txt`
 2. Try to commit *everything* either via the command line (`git commit -a`) or via your favorite git user interface. If and only if `i-am-untracked.txt` does not show up as changed, then `git-untracker` is installed successfully.
 
-## How to add to an existing repository
-
-### Option 1
-
-This option is probably easier for Windows users. All you need to do is copy each file from the `hooks` directory in this repository to the `.git/hooks` directory in the repository that needs `git-untracker`.
-
-### Option 2
-
-1. Make sure `git-untracker` is installed
-2. In the root of the repository in question, run `git init`. Running `git init` again does not erase the repository contents, it serves mostly just to update anything that changed in the git template.
-
 ## How to untrack a file
 
 1. Make sure the file has been committed.

@@ -12,6 +12,9 @@ namespace git_retrack
         [Option('c', "clean", HelpText = "Retrack everything")]
         public override bool Clean { get; set; }
 
+        [Option('s', "save", HelpText = "Removes the specified files from all .gituntrack files.")]
+        public override bool Save { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {
@@ -21,7 +24,7 @@ namespace git_retrack
             {
                 Heading = new HeadingInfo("git-retrack", version.InformationalVersion),
                 Copyright = new CopyrightInfo("Apocalyptic Octopus", 2015),
-                AdditionalNewLineAfterOption = true,
+                AdditionalNewLineAfterOption = false,
                 AddDashesToOption = true
             };
             help.AddPreOptionsLine("MIT License");

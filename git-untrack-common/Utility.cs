@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace git_untrack_common
 {
-    public class Utility
+    public static class Utility
     {
         public const string GitUntrackFileName = ".gituntrack";
         private static Options _options;
@@ -39,6 +40,18 @@ namespace git_untrack_common
             _options = options;
             var pathsToProcess = EnumeratePathsToProcess(_options.Paths.Select(str => new PathNode(str, true)).ToList()).ToList();
 
+            if (_options.Save)
+            {
+                if (verb == ProcessVerb.Retrack)
+                {
+                    SaveRetrackChanges(pathsToProcess);
+                }
+                else
+                {
+                    SaveUntrackChanges(pathsToProcess);
+                }
+            }
+
             if (_options.Verbose)
                 Console.WriteLine($"Processing {pathsToProcess.Count} paths");
 
@@ -51,8 +64,8 @@ namespace git_untrack_common
                     toBeTracked = !toBeTracked;
 
                 var args = toBeTracked
-                    ? $"update-index --no-assume-unchanged \"{pathToProcess.Path}\""
-                    : $"update-index --assume-unchanged \"{pathToProcess.Path}\"";
+                    ? $"update-index --no-assume-unchanged \"{pathToProcess.Path.RelativeTo(Environment.CurrentDirectory)}\""
+                    : $"update-index --assume-unchanged \"{pathToProcess.Path.RelativeTo(Environment.CurrentDirectory)}\"";
                 Console.WriteLine($"git.exe {args}");
                 if (!_options.DryRun)
                 {
@@ -71,6 +84,39 @@ namespace git_untrack_common
             }
 
             return 0;
+        }
+
+        private static void SaveUntrackChanges(List<PathNode> pathsToProcess)
+        {
+            var allExplicitlyUntracked = EnumeratePathsToProcess(
+                EnumerableUtility.EmptyArray<PathNode>());
+            var pathsToStartUntracking = pathsToProcess.Where(pn => !allExplicitlyUntracked.Any(pn2 =>
+                Path.GetFullPath(pn2.Path).Equals(Path.GetFullPath(pn.Path), StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+            foreach (var pathToStartUntracking in pathsToStartUntracking)
+            {
+                var gitUntrackFileToAddNewPathTo = Path.Combine(Path.GetDirectoryName(pathToStartUntracking.Path), GitUntrackFileName);
+                File.AppendAllLines(gitUntrackFileToAddNewPathTo, new [] { Path.GetFileName(pathToStartUntracking.Path) });
+            }
+        }
+
+        private static void SaveRetrackChanges(List<PathNode> pathsToProcess)
+        {
+            var pathsToStopUntrackingGroupedByGitUntrackFile = EnumeratePathsToProcess(
+                EnumerableUtility.EmptyArray<PathNode>())
+                .Where(
+                    pn =>
+                        pathsToProcess.Any(
+                            pn2 =>
+                                Path.GetFullPath(pn2.Path)
+                                    .Equals(Path.GetFullPath(pn.Path), StringComparison.OrdinalIgnoreCase)))
+                .GroupBy(pn => pn.GitUntrackFile);
+            foreach (var group in pathsToStopUntrackingGroupedByGitUntrackFile)
+            {
+                var groupMembers = group.OrderBy(pn => pn.GitUntrackFileLineNumber).ToList();
+                var lines = File.ReadAllLines(group.Key).Where((str, i) => groupMembers.All(pn => pn.GitUntrackFileLineNumber != i)).ToList();
+                File.WriteAllLines(group.Key, lines);
+            }
         }
 
         private static IEnumerable<PathNode> EnumeratePathsToProcess(IReadOnlyList<PathNode> paths)
@@ -95,6 +141,60 @@ namespace git_untrack_common
                 .Where(node => node.IsIncluded);
         }
 
+        /// <summary>
+        /// http://www.iandevlin.com/blog/2010/01/csharp/generating-a-relative-path-in-csharp
+        /// </summary>
+        private static string RelativeTo(this string relTo, string absPath)
+        {
+            string[] absDirs = absPath.Split('\\');
+            string[] relDirs = relTo.Split('\\');
+
+            // Get the shortest of the two paths
+            int len = absDirs.Length < relDirs.Length ? absDirs.Length : relDirs.Length;
+            // Use to determine where in the loop we exited
+            int lastCommonRoot = -1;
+            int index;
+
+            // Find common root
+            for (index = 0; index < len; index++)
+            {
+                if (absDirs[index] == relDirs[index])
+                {
+                    lastCommonRoot = index;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // If we didn't find a common prefix then throw
+            if (lastCommonRoot == -1)
+            {
+                throw new ArgumentException("Paths do not have a common base");
+            }
+
+            // Build up the relative path
+            StringBuilder relativePath = new StringBuilder();
+            // Add on the ..
+            for (index = lastCommonRoot + 1; index < absDirs.Length; index++)
+            {
+                if (absDirs[index].Length > 0)
+                {
+                    relativePath.Append("..\\");
+                }
+            }
+
+            // Add on the folders
+            for (index = lastCommonRoot + 1; index < relDirs.Length - 1; index++)
+            {
+                relativePath.Append(relDirs[index] + "\\");
+            }
+
+            relativePath.Append(relDirs[relDirs.Length - 1]);
+            return relativePath.ToString();
+        }
+
         private static IEnumerable<PathNode> EnumeratePathToProcess(Stack<PathNode> pathsStack)
         {
             var node = pathsStack.Peek();
@@ -103,7 +203,7 @@ namespace git_untrack_common
             if (_options.Verbose)
             {
                 var nodeChar = node.IsIncluded ? "T" : "F";
-                Console.WriteLine($"{nodeChar} {path}");
+                Console.WriteLine($"{nodeChar} {path.RelativeTo(Environment.CurrentDirectory)}");
             }
 
             if (path == "-")
@@ -127,9 +227,13 @@ namespace git_untrack_common
             if (Path.GetFileName(path) == GitUntrackFileName)
             {
                 return File.ReadLines(path)
-                    .Where(str => !string.IsNullOrWhiteSpace(str))
-                    .Select(str => Path.IsPathRooted(str) ? str : $"{Path.GetDirectoryName(path)}\\{str}")
-                    .Select(str => new PathNode(str, true));
+                    .Select((str, i) =>
+                    {
+                        if (string.IsNullOrWhiteSpace(str))
+                            return null;
+                        var result = new PathNode(Path.IsPathRooted(str) ? str : $"{Path.GetDirectoryName(path)}\\{str}", path, i);
+                        return result;
+                    });
             }
 
             return EnumerableUtility.EmptyArray<PathNode>();

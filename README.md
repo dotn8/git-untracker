@@ -61,20 +61,20 @@ Note: at least one IDE (Visual Studio 2015), when creating a new project, will g
 
 ## Faq
 
-## What does `.gituntrack` do?
+## What does `.gituntrack` do if I do have `git-untracker` installed?
 
 1. If a tracked file is listed in `.gituntrack` then that file's changes will never be committed.
 2. Files can be removed from `.gituntrack` and added to it; when `.gituntrack` is committed with these changes, these changes will be applied to the git repository.
+
+### What does `.gituntrack` do if I don't have `git-untracker` installed?
+
+Nothing. If you don't have `git-untracker` installed, then the `.gituntrack` file has no special meaning.
 
 ### How do I untrack a file?
 
 1. Make sure the file has been committed.
 2. Add the file path to `.gituntrack`. The path must be relative to the root of the repository. File name patterns (e.g., `*.txt`) are not supported.
 3. Commit the changes to `.gituntrack`. Be aware: the file stops being tracked *after* `.gituntrack` is committed with the file name inside it. So, if there are any uncommitted changes in the file when `.gituntrack` is being committed, `git` will try to commit the file as well. In other words, there may be one last commit to the file in question.
-
-### What does `.gituntrack` do if I don't have `git-untracker` installed?
-
-Nothing. If you don't have `git-untracker` installed, then the `.gituntrack` file has no special meaning.
 
 ### How do I temporarily force a file to be tracked?
 

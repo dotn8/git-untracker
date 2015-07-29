@@ -15,6 +15,6 @@ namespace git_untrack_common
         public bool DryRun { get; set; }
 
         public abstract bool Clean { get; set; }
-        public abstract bool Save { get; set; }
+        public abstract bool Temporary { get; set; }
     }
 }

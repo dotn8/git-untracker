@@ -12,8 +12,8 @@ namespace git_retrack
         [Option('c', "clean", HelpText = "Retrack everything")]
         public override bool Clean { get; set; }
 
-        [Option('s', "save", HelpText = "Removes the specified files from all .gituntrack files.")]
-        public override bool Save { get; set; }
+        [Option('t', "temporary", HelpText = "Does not remove the specified files from any .gituntrack files. This means that the specified files can only be guaranteed to be tracked until the next git untrack or git retrack command.")]
+        public override bool Temporary { get; set; }
 
         [HelpOption]
         public string GetUsage()

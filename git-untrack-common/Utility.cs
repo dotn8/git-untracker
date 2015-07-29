@@ -40,7 +40,7 @@ namespace git_untrack_common
             _options = options;
             var pathsToProcess = EnumeratePathsToProcess(_options.Paths.Select(str => new PathNode(str, true)).ToList()).ToList();
 
-            if (_options.Save)
+            if (!_options.Temporary || _options.DryRun)
             {
                 if (verb == ProcessVerb.Retrack)
                 {
@@ -64,8 +64,8 @@ namespace git_untrack_common
                     toBeTracked = !toBeTracked;
 
                 var args = toBeTracked
-                    ? $"update-index --no-assume-unchanged \"{pathToProcess.Path.RelativeTo(Environment.CurrentDirectory)}\""
-                    : $"update-index --assume-unchanged \"{pathToProcess.Path.RelativeTo(Environment.CurrentDirectory)}\"";
+                    ? $"update-index --no-assume-unchanged \"{Path.GetFullPath(pathToProcess.Path).RelativeTo(Environment.CurrentDirectory)}\""
+                    : $"update-index --assume-unchanged \"{Path.GetFullPath(pathToProcess.Path).RelativeTo(Environment.CurrentDirectory)}\"";
                 Console.WriteLine($"git.exe {args}");
                 if (!_options.DryRun)
                 {
@@ -171,7 +171,7 @@ namespace git_untrack_common
             // If we didn't find a common prefix then throw
             if (lastCommonRoot == -1)
             {
-                throw new ArgumentException("Paths do not have a common base");
+                throw new ArgumentException($"Paths do not have a common base; \"{relTo}\" cannot be made relative to \"{absPath}\"");
             }
 
             // Build up the relative path

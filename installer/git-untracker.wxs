@@ -17,7 +17,7 @@
                     </Component>
                     <Component Id="GIT_UNTRACK.EXE" DiskId="1" Guid="DFECCB2B-F859-4DBB-912F-9AFFE1F9E986">
                         <File Id="GIT_UNTRACK.EXE" Name="git-untrack.exe" Source="git-untrack\bin\Release\git-untrack.exe" />
-                        <Environment Id="PATH" Name="PATH" Value="[GIT_UNTRACKER]" Permanent="yes" Part="last" Action="set" System="yes" />
+                        <Environment Id="PATH" Name="PATH" Value="[GIT_UNTRACKER]" Permanent="no" Part="last" Action="set" System="yes" />
                     </Component>
                     <Component Id="GIT_UNTRACK.EXE.CONFIG" DiskId="1" Guid="FD75068C-1D8A-42B5-A843-FA1D6262E05D">
                         <File Id="GIT_UNTRACK.EXE.CONFIG" Name="git-untrack.exe.config" Source="git-untrack\bin\Release\git-untrack.exe.config" />
@@ -37,10 +37,23 @@
                     <Component Id="GIT_RETRACK.EXE.CONFIG" DiskId="1" Guid="071086B3-1D50-41AA-A51E-3D9B9B889F32">
                         <File Id="GIT_RETRACK.EXE.CONFIG" Name="git-retrack.exe.config" Source="git-retrack\bin\Release\git-retrack.exe.config" />
                     </Component>
+                    <Directory Id="GIT_TEMPLATE_DIR" Name="git_template_dir">
+                        <Directory Id="HOOKS" Name="hooks">
+                            <Component Id="POST_CHECKOUT" DiskId="1" Guid="F5C76698-04F1-47A3-B0A1-6865E31CC589">
+                                <File Id="POST_CHECKOUT" Name="post-checkout" Source="git_template_dir\hooks\post-checkout" />
+                                <Environment Id="GIT_TEMPLATE_DIR" Name="GIT_TEMPLATE_DIR" Value="[GIT_TEMPLATE_DIR]" Permanent="no" Part="all" Action="set" System="yes" />
+                            </Component>
+                            <Component Id="POST_COMMIT" DiskId="1" Guid="598AA270-6616-40D4-8999-87A2DABDB6EC">
+                                <File Id="POST_COMMIT" Name="post-commit" Source="git_template_dir\hooks\post-commit" />
+                            </Component>
+                        </Directory>
+                    </Directory>
                 </Directory>
             </Directory>
         </Directory>
         <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
+            <ComponentRef Id="POST_CHECKOUT" />
+            <ComponentRef Id="POST_COMMIT" />
             <ComponentRef Id="BCL.COMMUNITY.EXTENSIONS.DLL" />
             <ComponentRef Id="COMMANDLINE.DLL" />
             <ComponentRef Id="GIT_UNTRACK_COMMON.DLL" />

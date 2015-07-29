@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using CommandLine;
-using CommandLine.Text;
 using git_untrack_common;
 
 namespace git_untrack
@@ -14,13 +14,11 @@ namespace git_untrack
             if (Parser.Default.ParseArguments(args, options))
             {
                 if (options.Verbose)
-                    Console.WriteLine("git-untrack 0.0.1-alpha");
+                {
+                    var version = (AssemblyInformationalVersionAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).First();
+                    Console.WriteLine($"git-untrack {version.InformationalVersion}");
+                }
                 Utility.Process(options, ProcessVerb.Untrack);
-            }
-            else
-            {
-                // Display the default usage information
-                Console.WriteLine(options.GetUsage());
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using CommandLine;
 using git_untrack_common;
 
@@ -13,13 +14,11 @@ namespace git_retrack
             if (Parser.Default.ParseArguments(args, options))
             {
                 if (options.Verbose)
-                    Console.WriteLine("git-retrack 0.0.1-alpha");
+                {
+                    var version = (AssemblyInformationalVersionAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).First();
+                    Console.WriteLine($"git-retrack {version.InformationalVersion}");
+                }
                 Utility.Process(options, ProcessVerb.Retrack);
-            }
-            else
-            {
-                // Display the default usage information
-                Console.WriteLine(options.GetUsage());
             }
         }
     }

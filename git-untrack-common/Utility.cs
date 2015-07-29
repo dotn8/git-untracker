@@ -96,7 +96,10 @@ namespace git_untrack_common
             foreach (var pathToStartUntracking in pathsToStartUntracking)
             {
                 var gitUntrackFileToAddNewPathTo = Path.Combine(Path.GetDirectoryName(pathToStartUntracking.Path), GitUntrackFileName);
-                File.AppendAllLines(gitUntrackFileToAddNewPathTo, new [] { Path.GetFileName(pathToStartUntracking.Path) });
+                var lines = File.ReadAllLines(gitUntrackFileToAddNewPathTo)
+                    .ConcatItems(Path.GetFileName(pathToStartUntracking.Path))
+                    .ToList();
+                File.WriteAllLines(gitUntrackFileToAddNewPathTo, lines);
             }
         }
 

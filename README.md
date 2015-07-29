@@ -109,10 +109,12 @@ When the person with the local changes pulls from the remote that has an updated
 
 In other words, `git` will not overwrite your local changes; it will force you to resolve the conflict.
 
+**However** when you try to resolve the conflicts, `git` will show no conflicts. Currently you must temporarily start tracking a file again using the trick shown in the FAQ `How do I temporarily force a file to be tracked?`, resolve the conflict, and then revoke the temporary tracking of the file as described in the same FAQ.
+
 ### Should I use Windows-style paths or Unix-style paths in `.gituntrack`?
 
 You can use either.
 
 ### Can I put a `.gituntrack` file in sub-folders in the repository, or does it have to be in the repository root?
 
-Right now `.gituntrack` has to be in the repository root.
+Right now `.gituntrack` has to be in the repository root. There's an issue for this [here](https://github.com/JohnBillington/git-untracker/issues/3).

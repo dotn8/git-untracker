@@ -113,7 +113,6 @@ In other words, `git` will not overwrite your local changes; it will force you t
 
 You can use either.
 
-## Pitfalls
+### Can I put a `.gituntrack` file in sub-folders in the repository, or does it have to be in the repository root?
 
-1. Right now the `.gituntrack` file must be in the repository root.
-2. Some tools automatically specify their own template when creating a git repository; in these cases, the user must manually add the hooks to the repository. See the section `How to manually add to an existing repository` for more info.
+Right now `.gituntrack` has to be in the repository root.

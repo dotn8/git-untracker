@@ -46,11 +46,6 @@ Also, Jim and Ellie design the committed `App.config` so that if a developer *do
 
 Note: the purpose of this use case is not to justify this software. It's to describe a simple problem and solution that potential users can identify with.
 
-## What does `.gituntrack` do
-
-1. If a tracked file is listed in `.gituntrack` then that file's changes will never be committed.
-2. Files can be removed from `.gituntrack` and added to it; when `.gituntrack` is committed with these changes, these changes will be applied to the git repository.
-
 ## How to install
 
 1. Download the git-untracker repository: `git clone https://github.com/JohnBillington/git-untracker.git`
@@ -64,13 +59,18 @@ Note: at least one IDE (Visual Studio 2015), when creating a new project, will g
 1. Edit and save changes to the file `i-am-untracked.txt`
 2. Try to commit *everything* either via the command line (`git commit -a`) or via your favorite git user interface. If and only if `i-am-untracked.txt` does not show up as changed, then `git-untracker` is installed successfully.
 
-## How to untrack a file
+## Faq
+
+## What does `.gituntrack` do?
+
+1. If a tracked file is listed in `.gituntrack` then that file's changes will never be committed.
+2. Files can be removed from `.gituntrack` and added to it; when `.gituntrack` is committed with these changes, these changes will be applied to the git repository.
+
+### How do I untrack a file?
 
 1. Make sure the file has been committed.
-2. Add the file path to `.gituntrack`. The path must be relative to the root of the repository. File name patterns are not supported.
-3. Commit the changes to `.gituntrack`. Be aware: the file stops being tracked *after* `.gituntrack` is committed with the file name inside it. So, if there are any uncommitted changes in the file when `.gituntrack` is being committed, `git` will try to commit the file as well. In other words, there may be one last commit to the file if you commit all your changes.
-
-## Faq
+2. Add the file path to `.gituntrack`. The path must be relative to the root of the repository. File name patterns (e.g., `*.txt`) are not supported.
+3. Commit the changes to `.gituntrack`. Be aware: the file stops being tracked *after* `.gituntrack` is committed with the file name inside it. So, if there are any uncommitted changes in the file when `.gituntrack` is being committed, `git` will try to commit the file as well. In other words, there may be one last commit to the file in question.
 
 ### What does `.gituntrack` do if I don't have `git-untracker` installed?
 
@@ -90,7 +90,7 @@ To see which files are untracked, run the following command line (from [here](ht
 
     git ls-files -v | grep '^[[:lower:]]'
 
-### What happens there are local changes to the untracked file and remote, committed changes to the untracked file?
+### What happens when there are local changes to the untracked file and remote, committed changes to the untracked file?
 
 When the person with the local changes pulls from the remote that has an updated version of the file, `git` detects that there's a conflict and displays a message like this:
 

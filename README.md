@@ -109,6 +109,10 @@ When the person with the local changes pulls from the remote that has an updated
 
 In other words, `git` will not overwrite your local changes; it will force you to resolve the conflict.
 
+### Should I use Windows-style paths or Unix-style paths in `.gituntrack`?
+
+You can use either.
+
 ## Pitfalls
 
 1. Right now the `.gituntrack` file must be in the repository root.

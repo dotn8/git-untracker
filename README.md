@@ -48,16 +48,20 @@ Note: the purpose of this use case is not to justify this software. It's to desc
 
 ## How to install
 
-1. Download the git-untracker repository: `git clone https://github.com/JohnBillington/git-untracker.git`
-2. Make the `git_template_dir` the default git template like this: `git config --global init.templateDir path/to/git-untracker/git_template_dir`
-3. Any pre-existing git repositories must have `git init` executed in their root in order to add `git-untracker` functionality to them. New repositories will automatically have `git-untracker` installed in them (with one exception noted below).
+1. Download the installer and run it.
+2. In each git repository that you want `git-untrack` to work in, run this command line: `git init`
+3. Note: new repositories will automatically have `git-untrack` enabled in them.
 
 Note: at least one IDE (Visual Studio 2015), when creating a new project, will give the user the option of creating a new git repository to put the new project in. In these cases, it's possible that the created git repository will have been created with a custom template, in which case `git-untracker` will not be installed in that repository. You can install `git-untracker` into the new repository manually by running `git init` in its root directory or by copying the hooks from *this* repository's `hooks` folder into the `.git/hooks` folder of the new repository.
 
-### How to verify installation
+## How to build installer
 
-1. Edit and save changes to the file `i-am-untracked.txt`
-2. Try to commit *everything* either via the command line (`git commit -a`) or via your favorite git user interface. If and only if `i-am-untracked.txt` does not show up as changed, then `git-untracker` is installed successfully.
+Visual Studio and WiX must be installed to build the installer.
+
+1. Build the projects in Visual Studio with configuration `Release` and platform `AnyCPU`
+2. `cd` into the root of the `git-untracker` repository
+2. Run `"C:\Program Files (x86)\WiX Toolset v3.9\bin\candle.exe" -nologo "installer\git-untracker.wxs" -out "installer\git-untracker.wixobj"`
+3. Run `"C:\Program Files (x86)\WiX Toolset v3.9\bin\light.exe" -nologo "installer\git-untracker.wixobj" -out "installer\git-untracker.msi"`
 
 ## Faq
 
@@ -117,4 +121,4 @@ You can use either.
 
 ### Can I put a `.gituntrack` file in sub-folders in the repository, or does it have to be in the repository root?
 
-Right now `.gituntrack` has to be in the repository root. There's an issue for this [here](https://github.com/JohnBillington/git-untracker/issues/3).
+`.gituntrack` can be anywhere in the repository. Paths must always be relative to the directory containing the `.gituntrack` file.

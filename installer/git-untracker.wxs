@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="552A3646-4F2B-42B8-BFDA-60288121EDBE" Name="git-untracker" Language="1033" Version="0.0.1.0" Manufacturer="Apocalyptic Octopus" UpgradeCode="1A0E9CFB-A816-4700-A26D-FF59B350D087">
+        <Package Description="Git addon that is like .gitignore but for tracked files" InstallerVersion="200" Compressed="yes" />
+        <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder" Name="PFiles">
+                <Directory Id="GIT_UNTRACK" Name="git-untrack">
+                    <Component Id="BCL.COMMUNITY.EXTENSIONS.DLL" DiskId="1" Guid="ED5520B9-7505-40B7-8346-F0F6CC06EB23">
+                        <File Id="BCL.COMMUNITY.EXTENSIONS.DLL" Name="Bcl.Community.Extensions.dll" Source="git-untrack\bin\Release\Bcl.Community.Extensions.dll" />
+                    </Component>
+                    <Component Id="COMMANDLINE.DLL" DiskId="1" Guid="2EC4AC36-ED4E-41F7-88C4-CA52B5989AC5">
+                        <File Id="COMMANDLINE.DLL" Name="CommandLine.dll" Source="git-untrack\bin\Release\CommandLine.dll" />
+                    </Component>
+                    <Component Id="COMMANDLINE.XML" DiskId="1" Guid="1BD81ACE-6D4B-4751-B573-E64B12028603">
+                        <File Id="COMMANDLINE.XML" Name="CommandLine.xml" Source="git-untrack\bin\Release\CommandLine.xml" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK_COMMON.DLL" DiskId="1" Guid="1C9DCE7D-172D-4897-8697-0084AA7F8991">
+                        <File Id="GIT_UNTRACK_COMMON.DLL" Name="git-untrack-common.dll" Source="git-untrack\bin\Release\git-untrack-common.dll" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK_COMMON.PDB" DiskId="1" Guid="71173A58-EAF2-45CD-9C64-4193FFA62854">
+                        <File Id="GIT_UNTRACK_COMMON.PDB" Name="git-untrack-common.pdb" Source="git-untrack\bin\Release\git-untrack-common.pdb" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK.EXE" DiskId="1" Guid="DFECCB2B-F859-4DBB-912F-9AFFE1F9E986">
+                        <File Id="GIT_UNTRACK.EXE" Name="git-untrack.exe" Source="git-untrack\bin\Release\git-untrack.exe" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK.EXE.CONFIG" DiskId="1" Guid="FD75068C-1D8A-42B5-A843-FA1D6262E05D">
+                        <File Id="GIT_UNTRACK.EXE.CONFIG" Name="git-untrack.exe.config" Source="git-untrack\bin\Release\git-untrack.exe.config" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK.PDB" DiskId="1" Guid="22E0BEC8-F6FE-4F34-8162-6B991976C8FD">
+                        <File Id="GIT_UNTRACK.PDB" Name="git-untrack.pdb" Source="git-untrack\bin\Release\git-untrack.pdb" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK.VSHOST.EXE" DiskId="1" Guid="F01C81E7-9FE6-4B93-98BB-495D697FADC9">
+                        <File Id="GIT_UNTRACK.VSHOST.EXE" Name="git-untrack.vshost.exe" Source="git-untrack\bin\Release\git-untrack.vshost.exe" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK.VSHOST.EXE.CONFIG" DiskId="1" Guid="43788761-A76D-4729-A5F4-18D6C8D6B402">
+                        <File Id="GIT_UNTRACK.VSHOST.EXE.CONFIG" Name="git-untrack.vshost.exe.config" Source="git-untrack\bin\Release\git-untrack.vshost.exe.config" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK.VSHOST.EXE.MANIFEST" DiskId="1" Guid="2D09EE67-B547-48DB-B380-16FBCE2727E3">
+                        <File Id="GIT_UNTRACK.VSHOST.EXE.MANIFEST" Name="git-untrack.vshost.exe.manifest" Source="git-untrack\bin\Release\git-untrack.vshost.exe.manifest" />
+                    </Component>
+                </Directory>
+                <Directory Id="GIT_RETRACK" Name="git-retrack">
+                    <Component Id="BCL.COMMUNITY.EXTENSIONS.DLL_1" DiskId="1" Guid="19B0008B-9A9D-4F35-96B2-F88E38BCFC59">
+                        <File Id="BCL.COMMUNITY.EXTENSIONS.DLL_1" Name="Bcl.Community.Extensions.dll" Source="git-retrack\bin\Release\Bcl.Community.Extensions.dll" />
+                    </Component>
+                    <Component Id="COMMANDLINE.DLL_1" DiskId="1" Guid="64DB5415-B928-4E2B-9138-81E01629265A">
+                        <File Id="COMMANDLINE.DLL_1" Name="CommandLine.dll" Source="git-retrack\bin\Release\CommandLine.dll" />
+                    </Component>
+                    <Component Id="COMMANDLINE.XML_1" DiskId="1" Guid="3E13187C-FB0A-44A6-AFAC-120AB8803899">
+                        <File Id="COMMANDLINE.XML_1" Name="CommandLine.xml" Source="git-retrack\bin\Release\CommandLine.xml" />
+                    </Component>
+                    <Component Id="GIT_RETRACK.EXE" DiskId="1" Guid="A942B6F4-1B51-424F-A43A-52B276437D70">
+                        <File Id="GIT_RETRACK.EXE" Name="git-retrack.exe" Source="git-retrack\bin\Release\git-retrack.exe" />
+                    </Component>
+                    <Component Id="GIT_RETRACK.EXE.CONFIG" DiskId="1" Guid="071086B3-1D50-41AA-A51E-3D9B9B889F32">
+                        <File Id="GIT_RETRACK.EXE.CONFIG" Name="git-retrack.exe.config" Source="git-retrack\bin\Release\git-retrack.exe.config" />
+                    </Component>
+                    <Component Id="GIT_RETRACK.PDB" DiskId="1" Guid="01907297-3E3C-47F9-9C8D-3C8AC943A9A8">
+                        <File Id="GIT_RETRACK.PDB" Name="git-retrack.pdb" Source="git-retrack\bin\Release\git-retrack.pdb" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK_COMMON.DLL_1" DiskId="1" Guid="3E961728-193B-4B52-A98A-47F09582855E">
+                        <File Id="GIT_UNTRACK_COMMON.DLL_1" Name="git-untrack-common.dll" Source="git-retrack\bin\Release\git-untrack-common.dll" />
+                    </Component>
+                    <Component Id="GIT_UNTRACK_COMMON.PDB_1" DiskId="1" Guid="28BD1FC2-438A-41DA-A46F-4A91880BCC5F">
+                        <File Id="GIT_UNTRACK_COMMON.PDB_1" Name="git-untrack-common.pdb" Source="git-retrack\bin\Release\git-untrack-common.pdb" />
+                    </Component>
+                </Directory>
+            </Directory>
+        </Directory>
+        <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
+            <ComponentRef Id="BCL.COMMUNITY.EXTENSIONS.DLL" />
+            <ComponentRef Id="COMMANDLINE.DLL" />
+            <ComponentRef Id="COMMANDLINE.XML" />
+            <ComponentRef Id="GIT_UNTRACK_COMMON.DLL" />
+            <ComponentRef Id="GIT_UNTRACK_COMMON.PDB" />
+            <ComponentRef Id="GIT_UNTRACK.EXE" />
+            <ComponentRef Id="GIT_UNTRACK.EXE.CONFIG" />
+            <ComponentRef Id="GIT_UNTRACK.PDB" />
+            <ComponentRef Id="GIT_UNTRACK.VSHOST.EXE" />
+            <ComponentRef Id="GIT_UNTRACK.VSHOST.EXE.CONFIG" />
+            <ComponentRef Id="GIT_UNTRACK.VSHOST.EXE.MANIFEST" />
+            <ComponentRef Id="BCL.COMMUNITY.EXTENSIONS.DLL_1" />
+            <ComponentRef Id="COMMANDLINE.DLL_1" />
+            <ComponentRef Id="COMMANDLINE.XML_1" />
+            <ComponentRef Id="GIT_RETRACK.EXE" />
+            <ComponentRef Id="GIT_RETRACK.EXE.CONFIG" />
+            <ComponentRef Id="GIT_RETRACK.PDB" />
+            <ComponentRef Id="GIT_UNTRACK_COMMON.DLL_1" />
+            <ComponentRef Id="GIT_UNTRACK_COMMON.PDB_1" />
+        </Feature>
+        <UI />
+    </Product>
+</Wix>

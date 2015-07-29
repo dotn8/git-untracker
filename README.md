@@ -4,6 +4,8 @@ This is `git-untracker`, a cross-platform Git extension in the form of a couple 
 
 Before you can decide whether or not you need this software, you should understand Git, Git hooks, and what `.gitignore` does.
 
+**Note:** if you have configured the `$GIT_TEMPLATE_DIR` to be something custom, please be aware that using the installer for this program will overwrite the system `$GIT_TEMPLATE_DIR`.
+
 ## Use cases
 
 ### App.config as a manual template

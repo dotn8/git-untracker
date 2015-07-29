@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "git-untrack", "git-untrack\git-untrack.csproj", "{CD5F75C5-B8FA-41DD-95C7-AE8FCDE28BA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "git-untrack-common", "git-untrack-common\git-untrack-common.csproj", "{70F96CBC-B52C-4DC8-9A34-B6090FC6A0CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "git-retrack", "git-retrack\git-retrack.csproj", "{BE8F717A-2197-4E6A-95F6-A32915FA6023}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{CD5F75C5-B8FA-41DD-95C7-AE8FCDE28BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD5F75C5-B8FA-41DD-95C7-AE8FCDE28BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD5F75C5-B8FA-41DD-95C7-AE8FCDE28BA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70F96CBC-B52C-4DC8-9A34-B6090FC6A0CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70F96CBC-B52C-4DC8-9A34-B6090FC6A0CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70F96CBC-B52C-4DC8-9A34-B6090FC6A0CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70F96CBC-B52C-4DC8-9A34-B6090FC6A0CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE8F717A-2197-4E6A-95F6-A32915FA6023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE8F717A-2197-4E6A-95F6-A32915FA6023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE8F717A-2197-4E6A-95F6-A32915FA6023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE8F717A-2197-4E6A-95F6-A32915FA6023}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

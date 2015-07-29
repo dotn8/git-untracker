@@ -4,13 +4,13 @@ using System.Text;
 using CommandLine;
 using git_untrack_common;
 
-namespace git_untrack
+namespace git_retrack
 {
     public class Options
     {
         [ValueList(typeof(List<string>))]
         public List<string> Paths { get; set; }
-        
+
         [Option('v', null, HelpText = "Print details during execution.")]
         public bool Verbose { get; set; }
 
@@ -22,7 +22,7 @@ namespace git_untrack
             return usage.ToString();
         }
     }
-    
+
     internal class Program
     {
         private static void Main(string[] args)
@@ -30,7 +30,7 @@ namespace git_untrack
             var options = new Options();
             if (Parser.Default.ParseArguments(args, options))
             {
-                Utility.Process(options.Paths, ProcessVerb.Untrack, options.Verbose);
+                Utility.Process(options.Paths, ProcessVerb.Retrack, options.Verbose);
             }
             else
             {

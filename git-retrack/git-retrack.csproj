@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CD5F75C5-B8FA-41DD-95C7-AE8FCDE28BA6}</ProjectGuid>
+    <ProjectGuid>{BE8F717A-2197-4E6A-95F6-A32915FA6023}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>git_untrack</RootNamespace>
-    <AssemblyName>git-untrack</AssemblyName>
+    <RootNamespace>git_retrack</RootNamespace>
+    <AssemblyName>git-retrack</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

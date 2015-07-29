@@ -1,54 +1,16 @@
 ﻿using Bcl.Community.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using CommandLine;
 
 namespace git_untrack_common
 {
-    public class Options
-    {
-        [ValueList(typeof(List<string>))]
-        public List<string> Paths { get; set; }
-
-        [Option('v', null, HelpText = "Print details during execution.")]
-        public bool Verbose { get; set; }
-
-        [Option("dry-run", HelpText = "Don't actually effect anything")]
-        public bool DryRun { get; set; }
-
-        [HelpOption]
-        public string GetUsage()
-        {
-            var usage = new StringBuilder();
-            usage.AppendLine("git-untrack");
-            return usage.ToString();
-        }
-    }
-
-
-    public enum ProcessVerb
-    {
-        Retrack, Untrack
-    }
-
-    internal class PathNode
-    {
-        public PathNode(string path, bool isIncluded)
-        {
-            Path = path;
-            IsIncluded = isIncluded;
-        }
-
-        public string Path { get; }
-        public bool IsIncluded { get; }
-    }
-
     public class Utility
     {
         public const string GitUntrackFileName = ".gituntrack";
+        private static Options _options;
 
         private static IEnumerable<string> ReadLinesFromInput()
         {
@@ -72,8 +34,6 @@ namespace git_untrack_common
             return exePath;
         }
 
-        private static Options _options;
-
         public static int Process(Options options, ProcessVerb verb)
         {
             _options = options;
@@ -86,13 +46,24 @@ namespace git_untrack_common
 
             foreach (var pathToProcess in pathsToProcess)
             {
-                var args = verb == ProcessVerb.Untrack
-                    ? $"update-index --assume-unchanged \"{pathToProcess.Path}\""
-                    : $"update-index --no-assume-unchanged \"{pathToProcess.Path}\"";
+                var toBeTracked = verb == ProcessVerb.Retrack;
+                if (!pathToProcess.IsIncluded)
+                    toBeTracked = !toBeTracked;
+
+                var args = toBeTracked
+                    ? $"update-index --no-assume-unchanged \"{pathToProcess.Path}\""
+                    : $"update-index --assume-unchanged \"{pathToProcess.Path}\"";
                 Console.WriteLine($"git.exe {args}");
                 if (!_options.DryRun)
                 {
-                    var proc = System.Diagnostics.Process.Start(gitExe, args);
+                    var startInfo = new ProcessStartInfo()
+                    {
+                        Arguments = args,
+                        FileName = gitExe,
+                        UseShellExecute = false
+                    };
+
+                    var proc = System.Diagnostics.Process.Start(startInfo);
                     proc.WaitForExit();
                     if (proc.ExitCode != 0)
                         return proc.ExitCode;
@@ -116,9 +87,11 @@ namespace git_untrack_common
                     path.EnumerateTreeRecursively(EnumeratePathToProcess, EnumerableExtensions.TreeTraversalOrder.PostOrder));
             }
 
+            if (_options.Clean)
+                return result.Select(strs => strs[0])
+                    .Where(node => File.Exists(node.Path));
             return result.Select(strs => strs[0])
                 .Where(node => File.Exists(node.Path))
-                .Where(node => Path.GetFileName(node.Path) != GitUntrackFileName)
                 .Where(node => node.IsIncluded);
         }
 
@@ -127,10 +100,11 @@ namespace git_untrack_common
             var node = pathsStack.Peek();
             var path = node.Path;
 
-            var nodeChar = node.IsIncluded ? "T" : "F";
-
             if (_options.Verbose)
+            {
+                var nodeChar = node.IsIncluded ? "T" : "F";
                 Console.WriteLine($"{nodeChar} {path}");
+            }
 
             if (path == "-")
             {

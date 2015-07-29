@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using CommandLine;
 using git_untrack_common;
 
@@ -10,7 +9,7 @@ namespace git_retrack
     {
         private static void Main(string[] args)
         {
-            var options = new Options();
+            var options = new RetrackOptions();
             if (Parser.Default.ParseArguments(args, options))
             {
                 if (options.Verbose)

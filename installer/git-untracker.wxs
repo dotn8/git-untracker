@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="552A3646-4F2B-42B8-BFDA-60288121EDBE" Name="git-untracker" Language="1033" Version="0.0.1.0" Manufacturer="Apocalyptic Octopus" UpgradeCode="1A0E9CFB-A816-4700-A26D-FF59B350D087">
+    <Product Id="552A3646-4F2B-42B8-BFDA-60288121EDBE" Name="git-untracker" Language="1033" Version="0.0.2.0" Manufacturer="Apocalyptic Octopus" UpgradeCode="1A0E9CFB-A816-4700-A26D-FF59B350D087">
         <Package Description="Git addon that is like .gitignore but for tracked files" InstallerVersion="200" Compressed="yes" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">

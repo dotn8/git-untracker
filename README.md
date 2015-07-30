@@ -50,11 +50,13 @@ Note: the purpose of this use case is not to justify this software. It's to desc
 
 ## How to install
 
-(Currently Windows-only)
+### On Windows
 
 1. Download the installer and run it from [here](https://github.com/JohnBillington/git-untracker/releases).
 2. In each git repository that you want `git-untrack` to work in, copy the files from `C:\Program Files (x86)\git-untracker\git_template_dir\hooks` to `my_repository\.git\hooks`.
 3. Restart any terminal windows in which you're using `git`. This is needed because the installer modifies the `%PATH%` and relies on the updated `%PATH%` to work.
+
+### Notes
 
 **Note**: new repositories will automatically have `git-untrack` enabled in them.
 

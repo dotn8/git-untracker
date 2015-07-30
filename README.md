@@ -4,7 +4,7 @@ This is `git-untracker`, a cross-platform Git extension in the form of a couple 
 
 Before you can decide whether or not you need this software, you should understand Git, Git hooks, and what `.gitignore` does.
 
-**Note:** if you have configured the `$GIT_TEMPLATE_DIR` to be something custom, please be aware that using the installer for this program will overwrite the system `$GIT_TEMPLATE_DIR`.
+**Note:** if you have configured the `%GIT_TEMPLATE_DIR%` to be something custom, please be aware that using the installer for this program will overwrite the system `%GIT_TEMPLATE_DIR%`.
 
 ## Use cases
 
@@ -50,12 +50,15 @@ Note: the purpose of this use case is not to justify this software. It's to desc
 
 ## How to install
 
-1. Download the installer and run it.
-2. In each git repository that you want `git-untrack` to work in, copy the files from `C:\Program Files (x86)\git-untracker\git_template_dir\hooks` to `my\repository\.git\hooks`.
+(Currently Windows-only)
+
+1. Download the installer and run it from [here](https://github.com/JohnBillington/git-untracker/releases).
+2. In each git repository that you want `git-untrack` to work in, copy the files from `C:\Program Files (x86)\git-untracker\git_template_dir\hooks` to `my_repository\.git\hooks`.
+3. Restart any terminal windows in which you're using `git`. This is needed because the installer modifies the `%PATH%` and relies on the updated `%PATH%` to work.
 
 **Note**: new repositories will automatically have `git-untrack` enabled in them.
 
-**Note**: at least one IDE (Visual Studio 2015), when creating a new project, will give the user the option of creating a new git repository to put the new project in. In these cases, it's possible that the created git repository will have been created with a custom template, in which case `git-untracker` will not be installed in that repository. You can install `git-untracker` into the new repository manually by running `git init` in its root directory or by copying the hooks from *this* repository's `hooks` folder into the `.git/hooks` folder of the new repository.
+**Note**: at least one IDE (Visual Studio 2015), when creating a new project, will give the user the option of creating a new git repository to put the new project in. In these cases, it's possible that the created git repository will have been created with a custom template, in which case `git-untracker` will not be installed in that repository. You can install `git-untracker` into the new repository manually by running `git init` in its root directory or by copying the files from `C:\Program Files (x86)\git-untracker\git_template_dir\hooks` into the `.git/hooks` folder of the new repository.
 
 ## How to build installer
 

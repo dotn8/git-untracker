@@ -10,15 +10,22 @@ namespace git_retrack
     {
         private static void Main(string[] args)
         {
-            var options = new RetrackOptions();
-            if (Parser.Default.ParseArguments(args, options))
+            try
             {
-                if (options.Verbose)
+                var options = new RetrackOptions();
+                if (Parser.Default.ParseArguments(args, options))
                 {
-                    var version = (AssemblyInformationalVersionAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).First();
-                    Console.WriteLine($"git-retrack {version.InformationalVersion}");
+                    if (options.Verbose)
+                    {
+                        var version = (AssemblyInformationalVersionAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).First();
+                        Console.WriteLine($"git-retrack {version.InformationalVersion}");
+                    }
+                    Utility.Process(options, ProcessVerb.Retrack);
                 }
-                Utility.Process(options, ProcessVerb.Retrack);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception. Message: \"{ex.Message}\"{Environment.NewLine}Details: {ex}");
             }
         }
     }

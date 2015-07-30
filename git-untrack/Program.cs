@@ -10,15 +10,22 @@ namespace git_untrack
     {
         private static void Main(string[] args)
         {
-            var options = new UntrackOptions();
-            if (Parser.Default.ParseArguments(args, options))
+            try
             {
-                if (options.Verbose)
+                var options = new UntrackOptions();
+                if (Parser.Default.ParseArguments(args, options))
                 {
-                    var version = (AssemblyInformationalVersionAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).First();
-                    Console.WriteLine($"git-untrack {version.InformationalVersion}");
+                    if (options.Verbose)
+                    {
+                        var version = (AssemblyInformationalVersionAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).First();
+                        Console.WriteLine($"git-untrack {version.InformationalVersion}");
+                    }
+                    Utility.Process(options, ProcessVerb.Untrack);
                 }
-                Utility.Process(options, ProcessVerb.Untrack);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception. Message: \"{ex.Message}\"{Environment.NewLine}Details: {ex}");
             }
         }
     }

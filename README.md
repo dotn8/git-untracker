@@ -51,7 +51,7 @@ Note: the purpose of this use case is not to justify this software. It's to desc
 ## How to install
 
 1. Download the installer and run it.
-2. In each git repository that you want `git-untrack` to work in, run this command line: `git init`
+2. In each git repository that you want `git-untrack` to work in, copy the files from `C:\Program Files (x86)\git-untracker\git_template_dir\hooks` to `my\repository\.git\hooks`.
 
 **Note**: new repositories will automatically have `git-untrack` enabled in them.
 

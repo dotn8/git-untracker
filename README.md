@@ -87,6 +87,10 @@ Nothing. If you don't have `git-untracker` installed, then the `.gituntrack` fil
 
     git untrack path/to/file.txt
 
+### How do I re-track a file?
+
+    git retrack path/to/file.txt
+
 ### How do I temporarily force a file to be tracked?
 
 To temporarily force a file to be tracked, run the following command line:
@@ -103,7 +107,15 @@ To see which files are untracked, run the following command line (from [here](ht
 
     git ls-files -v | grep '^[[:lower:]]'
 
-### What happens when there are local changes to the untracked file and remote, committed changes to the untracked file?
+### If I've made local changes to the untracked file and I attempt to commit, will I see the file in the list of changed files?
+
+No. If you do, that means that `git-untracker` is not installed or it is not installed in your git repository. See the "How to install" section to fix this.
+
+### What happens when there *aren't* local changes to the untracked file and I pull from a remote that has an updated version of the file?
+
+Your local file will be changed to match the updated file.
+
+### What happens when there *are* local changes to the untracked file and I pull from a remote that has an updated version of the file?
 
 When the person with the local changes pulls from the remote that has an updated version of the file, `git` detects that there's a conflict and displays a message like this:
 

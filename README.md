@@ -72,7 +72,7 @@ Note: the purpose of this use case is not to justify this software. It's to desc
 4. Run `"C:\Program Files (x86)\WiX Toolset v3.9\bin\candle.exe" -nologo "installer\git-untracker.wxs" -out "installer\git-untracker.wixobj"`
 5. Run `"C:\Program Files (x86)\WiX Toolset v3.9\bin\light.exe" -nologo "installer\git-untracker.wixobj" -out "installer\git-untracker.msi"`
 
-## Faq
+## FAQ
 
 ## What does `.gituntrack` do if I do have `git-untracker` installed?
 

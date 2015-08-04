@@ -87,9 +87,13 @@ Nothing. If you don't have `git-untracker` installed, then the `.gituntrack` fil
 
     git untrack path/to/file.txt
 
+**Note:** the path is case sensitive, even on Windows.
+
 ### How do I re-track a file?
 
     git retrack path/to/file.txt
+
+**Note:** the path is case sensitive, even on Windows.
 
 ### How do I temporarily force a file to be tracked?
 
@@ -106,6 +110,8 @@ You can run the above command at any time to make sure all the files are properl
 To see which files are untracked, run the following command line (from [here](http://stackoverflow.com/a/2363495/4995014)):
 
     git ls-files -v | grep '^[[:lower:]]'
+
+**Note:** the paths are case sensitive, even on Windows.
 
 ### If I've made local changes to the untracked file and I attempt to commit, will I see the file in the list of changed files?
 
